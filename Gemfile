@@ -13,6 +13,8 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
 
+gem 'haml-rails'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -26,6 +28,10 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+group :development do
+  gem 'pry'
+end
 
 group :test do
   gem 'rspec-rails'

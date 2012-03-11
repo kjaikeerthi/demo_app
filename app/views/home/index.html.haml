@@ -1,0 +1,24 @@
+= form_for :service, :url => services_path, method: 'post' do |f|
+  = f.label :provider
+  = f.select :provider, ["Twitter", "Facebook"]
+  = f.submit :add
+
+
+%hr
+
+%h3 Your Accounts
+
+- @services.each do |service|
+  = "#{service.provider} (#{service.uid})"
+  = link_to "Remove",  service_path(service.id), :method => :delete
+
+%hr
+%h3 Post
+
+%form(action='#{home_posts_path}' method="post")
+  - @services.each do |service|
+    %input(type="checkbox" name="service[]" value="#{service.id}") #{service.provider}(#{service.uid})
+  %br
+  %textarea(name="message" cols="150" rows="15")
+  %br
+  %input(type="submit" value="Post")
