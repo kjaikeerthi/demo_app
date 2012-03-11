@@ -7,7 +7,7 @@ gem 'rails', '3.2.2'
 
 gem 'pg'
 gem 'twitter'
-
+gem 'thin'
 gem 'devise'
 
 gem 'omniauth'
