@@ -35,5 +35,6 @@ class ServicesController < ApplicationController
       account = Twitter::Client.new(oauth_token: service.auth_token, oauth_token_secret: service.auth_secret)
       account.update(params[:message])
     end
+    redirect_to root_path
   end
 end
