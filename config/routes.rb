@@ -5,7 +5,8 @@ SocialApp::Application.routes.draw do
   resources :services, :only => [:create, :destroy]
 
   get '/auth/:provider/callback' => "services#callback"
-  post '/post' => "services#post", :as => "home_posts"
+  post '/user/:user_id/post' => "services#post", :as => "home_posts"
+  get '/:provider/:id/show' => "services#show", :as => "show_posts"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

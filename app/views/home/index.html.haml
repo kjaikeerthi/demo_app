@@ -10,12 +10,13 @@
 
 - @services.each do |service|
   = "#{service.provider} (#{service.uid})"
+  = link_to "Show", show_posts_path({id: service.id, provider: service.provider})
   = link_to "Remove",  service_path(service.id), :method => :delete
 
 %hr
 %h3 Post
 
-%form(action='#{home_posts_path}' method="post")
+%form(action='#{home_posts_path(user_id: current_user.id)}' method="post")
   - @services.each do |service|
     %input(type="checkbox" name="service[]" value="#{service.id}") #{service.provider}(#{service.uid})
   %br
