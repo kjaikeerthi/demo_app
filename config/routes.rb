@@ -1,12 +1,17 @@
 SocialApp::Application.routes.draw do
   root :to => 'home#index'
   devise_for :users
-
-  resources :services, :only => [:create, :destroy]
+  
 
   get '/auth/:provider/callback' => "services#callback"
-  post '/user/:user_id/post' => "services#post", :as => "home_posts"
-  get '/:provider/:id/show' => "services#show", :as => "show_posts"
+
+  resources :projects, :only => [:create, :destroy, :show] do
+
+    resources :services, :only => [:create, :destroy]
+    post '/user/:user_id/post' => "services#post", :as => "home_posts"
+    get '/:provider/:id/show' => "services#show", :as => "show_posts"
+  end
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

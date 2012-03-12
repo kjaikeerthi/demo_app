@@ -5,7 +5,7 @@ class CreateServices < ActiveRecord::Migration
       t.string :provider
       t.string :auth_token
       t.string :auth_secret
-      t.references :user
+      t.references :project
       t.timestamps
     end
   end

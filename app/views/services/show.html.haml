@@ -7,4 +7,4 @@
   - elsif @service.provider == "facebook"
     - @feeds.data.each do |timeline|
       %li= timeline.message
-= link_to "Back to Home", root_path
+= link_to "Back to Project", project_path(@project.id)

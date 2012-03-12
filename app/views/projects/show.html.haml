@@ -1,0 +1,32 @@
+%h3= @project.name
+%p= @project.description
+%hr
+= form_for :service, :url => project_services_path(project_id: @project.id), method: 'post' do |f|
+  = f.label :provider
+  = f.select :provider, ["Twitter", "Facebook"]
+  = f.submit :add
+
+
+%hr
+
+%h3 Your Accounts
+
+- @project.services.each do |service|
+  = "#{service.provider} (#{service.uid})"
+  = link_to "Show", project_show_posts_path({id: service.id, provider: service.provider, project_id: @project.id})
+  = link_to "Remove",  project_service_path({id: service.id, project_id: @project.id}), :method => :delete
+  %br
+%hr
+%h3 Post
+
+
+%form(action='#{project_home_posts_path(user_id: current_user.id, project_id: @project.id)}' method="post")
+  - @project.services.each do |service|
+    %input(type="checkbox" name="service[]" value="#{service.id}") #{service.provider}(#{service.uid})
+  %br
+  %textarea(name="message" cols="150" rows="15")
+  %br
+  %input(type="submit" value="Post")
+
+%br
+= link_to "Back to Home", root_path

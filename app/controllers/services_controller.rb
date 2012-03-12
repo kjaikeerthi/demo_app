@@ -2,6 +2,9 @@ class ServicesController < ApplicationController
   before_filter :authenticate_user!, :except => [:post, :show]
 
   def create
+    project = current_user.projects.find(params[:project_id])
+    session[:project_id] = project.id if project
+
     if params[:service][:provider].downcase == "twitter"
       redirect_to '/auth/twitter'
     elsif params[:service][:provider].downcase == "facebook"
@@ -10,55 +13,71 @@ class ServicesController < ApplicationController
   end
 
   def callback
-
     auth = request.env["omniauth.auth"]
     uid = auth["uid"]
-    unless current_user.services.find_by_uid(uid)
-      if auth["provider"] == "twitter"
-        current_user.services.create(
-          uid: uid,
-          provider: auth["provider"],
-          auth_token: auth["credentials"]["token"],
-          auth_secret: auth["credentials"]["secret"]
-          )
-      elsif auth["provider"] == "facebook"
-        current_user.services.create(
-          uid: uid,
-          provider: auth["provider"],
-          auth_token: auth["credentials"]["token"]
-          )
+    project = current_user.projects.find(session[:project_id]) if session && session[:project_id]
+    session[:project_id] = nil
+    if Project
+      unless project.services.find_by_uid(uid)
+        if auth["provider"] == "twitter"
+          project.services.create(
+            uid: uid,
+            provider: auth["provider"],
+            auth_token: auth["credentials"]["token"],
+            auth_secret: auth["credentials"]["secret"]
+            )
+        elsif auth["provider"] == "facebook"
+          project.services.create(
+            uid: uid,
+            provider: auth["provider"],
+            auth_token: auth["credentials"]["token"]
+            )
+        end
+      else
+        flash[:notice] = "This #{params[:provider].capitalize} account already belongs to you."
       end
+      redirect_to project_path(project.id)
     else
-      flash[:notice] = "This #{params[:provider].capitalize} account already belongs to you."
+      redirect_to root_path
     end
-    redirect_to root_path
   end
 
   def destroy
-    service = current_user.services.find(params[:id])
-    service.delete
-    redirect_to root_path
+    project = current_user.projects.find(params[:project_id])
+    if project
+      service = project.services.find(params[:id])
+      service.delete
+      redirect_to project_path(project.id)
+    else
+      redirect_to root_path
+    end
   end
 
   def post
     @user = User.find(params[:user_id])
-    services = Service.find(params[:service])
-    services.each do |service|
-      if service.provider == "twitter"
-        account = Twitter::Client.new(oauth_token: service.auth_token, oauth_token_secret: service.auth_secret)
-        account.update(params[:message])
-      elsif service.provider == "facebook"
-        @fb = MiniFB::OAuthSession.new(service.auth_token)
-        @fb.post('me', :type => :feed, :params => {
-            :message => params[:message]
-          })
+    @project = @user.projects.find(params[:project_id])
+    if @project
+      services = Service.find(params[:service])
+      services.each do |service|
+        if service.provider == "twitter"
+          account = Twitter::Client.new(oauth_token: service.auth_token, oauth_token_secret: service.auth_secret)
+          account.update(params[:message])
+        elsif service.provider == "facebook"
+          @fb = MiniFB::OAuthSession.new(service.auth_token)
+          @fb.post('me', :type => :feed, :params => {
+              :message => params[:message]
+            })
+        end
       end
+      sign_in(@user)
+      redirect_to project_path(@project.id)
+    else
+      redirect_to root_path
     end
-    sign_in(@user)
-    redirect_to root_path
   end
 
   def show
+    @project = current_user.projects.find(params[:project_id])
     @service = Service.find(params[:id])
     if @service
       if @service.provider.downcase == "twitter"
