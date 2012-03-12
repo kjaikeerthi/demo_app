@@ -12,7 +12,7 @@
   = "#{service.provider} (#{service.uid})"
   = link_to "Show", show_posts_path({id: service.id, provider: service.provider})
   = link_to "Remove",  service_path(service.id), :method => :delete
-
+  %br
 %hr
 %h3 Post
 

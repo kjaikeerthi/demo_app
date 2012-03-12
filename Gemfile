@@ -7,11 +7,14 @@ gem 'rails', '3.2.2'
 
 gem 'pg'
 gem 'twitter'
+gem 'mini_fb'
+
 gem 'thin'
 gem 'devise'
 
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 
 gem 'haml-rails'
 gem 'heroku'

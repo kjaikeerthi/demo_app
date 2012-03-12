@@ -1,6 +1,10 @@
-Tweets from #{@account.user.screen_name}
+- if @service.provider == "twitter"
+  Tweets from #{@account.user.screen_name}
 %ul
-  - @account.home_timeline.each do |timeline|
-    %li= timeline.text
-
+  - if @service.provider == "twitter"
+    - @feeds.each do |timeline|
+      %li= timeline.text
+  - elsif @service.provider == "facebook"
+    - @feeds.data.each do |timeline|
+      %li= timeline.message
 = link_to "Back to Home", root_path
