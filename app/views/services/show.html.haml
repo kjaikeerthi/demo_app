@@ -15,5 +15,13 @@
         .clear(style="clear:both")
   - elsif @service.provider == "facebook"
     - @feeds.data.each do |timeline|
-      %li= timeline.message
+      %li
+        .picture(style="float: left;width: 48px;")
+          -# = image_tag timeline.user.profile_background_image_url, width: "48", height: "48"
+        .feed
+          .user
+            = timeline.from.name
+          .timeline
+            = timeline.story || timeline.message
+        .clear(style="clear:both")
 = link_to "Back to Project", project_path(@project.id)

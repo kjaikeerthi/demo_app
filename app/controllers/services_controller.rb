@@ -85,7 +85,7 @@ class ServicesController < ApplicationController
         @feeds = @account.home_timeline
       elsif @service.provider.downcase == "facebook"
         @account = MiniFB::OAuthSession.new(@service.auth_token)
-        @feeds = @account.get("me", :type => "statuses")
+        @feeds = @account.me.feed
       end
     end
   end
