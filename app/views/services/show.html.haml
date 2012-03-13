@@ -3,7 +3,16 @@
 %ul
   - if @service.provider == "twitter"
     - @feeds.each do |timeline|
-      %li= timeline.text
+      %li
+        .picture(style="float: left;width: 48px;")
+          = image_tag timeline.user.profile_background_image_url, width: "48", height: "48"
+        .feed
+          .user
+            = timeline.user.name
+            @
+            = timeline.user.screen_name
+          .timeline= timeline.text
+        .clear(style="clear:both")
   - elsif @service.provider == "facebook"
     - @feeds.data.each do |timeline|
       %li= timeline.message
