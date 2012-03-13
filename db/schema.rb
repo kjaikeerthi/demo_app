@@ -22,13 +22,13 @@ ActiveRecord::Schema.define(:version => 20120312174333) do
   end
 
   create_table "services", :force => true do |t|
-    t.integer  "uid",         :limit => 8
+    t.string   "uid"
     t.string   "provider"
     t.string   "auth_token"
     t.string   "auth_secret"
     t.integer  "project_id"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|

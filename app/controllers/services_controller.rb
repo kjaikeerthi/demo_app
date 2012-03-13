@@ -9,11 +9,14 @@ class ServicesController < ApplicationController
       redirect_to '/auth/twitter'
     elsif params[:service][:provider].downcase == "facebook"
       redirect_to '/auth/facebook'
+    elsif params[:service][:provider].downcase == "linkedin"
+      redirect_to '/auth/linkedin'
     end
   end
 
   def callback
     auth = request.env["omniauth.auth"]
+    binding.pry
     uid = auth["uid"]
     project = current_user.projects.find(session[:project_id]) if session && session[:project_id]
     session[:project_id] = nil
@@ -31,6 +34,13 @@ class ServicesController < ApplicationController
             uid: uid,
             provider: auth["provider"],
             auth_token: auth["credentials"]["token"]
+            )
+        elsif auth["provider"] == "linkedin"
+          project.services.create(
+            uid: uid,
+            provider: auth["provider"],
+            auth_token: auth["credentials"]["token"],
+            auth_secret: auth["credentials"]["secret"]
             )
         end
       else
@@ -67,6 +77,7 @@ class ServicesController < ApplicationController
           @fb.post('me', :type => :feed, :params => {
               :message => params[:message]
             })
+        elsif service.provider == "linkedin"
         end
       end
       sign_in(@user)
@@ -86,6 +97,7 @@ class ServicesController < ApplicationController
       elsif @service.provider.downcase == "facebook"
         @account = MiniFB::OAuthSession.new(@service.auth_token)
         @feeds = @account.me.feed
+      elsif @service.provider.downcase == "linkedin"
       end
     end
   end

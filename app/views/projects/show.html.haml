@@ -3,7 +3,7 @@
 %hr
 = form_for :service, :url => project_services_path(project_id: @project.id), method: 'post' do |f|
   = f.label :provider
-  = f.select :provider, ["Twitter", "Facebook"]
+  = f.select :provider, ["Twitter", "Facebook", "Linkedin"]
   = f.submit :add
 
 
