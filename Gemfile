@@ -15,6 +15,7 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem 'omniauth-linkedin'
 
 gem 'haml-rails'
 gem 'heroku'
