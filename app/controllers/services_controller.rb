@@ -16,7 +16,6 @@ class ServicesController < ApplicationController
 
   def callback
     auth = request.env["omniauth.auth"]
-    binding.pry
     uid = auth["uid"]
     project = current_user.projects.find(session[:project_id]) if session && session[:project_id]
     session[:project_id] = nil
