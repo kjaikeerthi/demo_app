@@ -8,6 +8,7 @@ gem 'rails', '3.2.2'
 gem 'pg'
 gem 'twitter'
 gem 'mini_fb'
+gem 'linkedin'
 
 gem 'thin'
 gem 'devise'

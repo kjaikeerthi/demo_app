@@ -78,6 +78,9 @@ class ServicesController < ApplicationController
               :message => params[:message]
             })
         elsif service.provider == "linkedin"
+          @client = LinkedIn::Client.new
+          @client.authorize_from_access(service.auth_token, service.auth_secret)
+          @client.update_status(params[:message])
         end
       end
       sign_in(@user)
@@ -98,6 +101,9 @@ class ServicesController < ApplicationController
         @account = MiniFB::OAuthSession.new(@service.auth_token)
         @feeds = @account.me.feed
       elsif @service.provider.downcase == "linkedin"
+        @client = LinkedIn::Client.new
+        @client.authorize_from_access(@service.auth_token, @service.auth_secret)
+        @feeds = @client.network_updates
       end
     end
   end
