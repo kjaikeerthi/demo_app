@@ -11,7 +11,7 @@ SocialApp::Application.routes.draw do
     post '/user/:user_id/post' => "services#post", :as => "home_posts"
     get '/:provider/:id/show' => "services#show", :as => "show_posts"
     post '/gmail' => "services#gmail", :as => "gmail_posts"
-  endo
+  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
