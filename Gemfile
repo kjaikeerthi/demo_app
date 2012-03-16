@@ -12,11 +12,13 @@ gem 'linkedin'
 
 gem 'thin'
 gem 'devise'
+gem 'mail'
 
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin'
+gem 'omniauth-google'
 
 gem 'haml-rails'
 gem 'heroku'

@@ -3,14 +3,15 @@ SocialApp::Application.routes.draw do
   devise_for :users
   
 
-  get '/auth/:provider/callback' => "services#callback"
+  match '/auth/:provider/callback' => "services#callback"
 
   resources :projects, :only => [:create, :destroy, :show] do
 
     resources :services, :only => [:create, :destroy]
     post '/user/:user_id/post' => "services#post", :as => "home_posts"
     get '/:provider/:id/show' => "services#show", :as => "show_posts"
-  end
+    post '/gmail' => "services#gmail", :as => "gmail_posts"
+  endo
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

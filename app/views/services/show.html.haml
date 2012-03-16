@@ -24,4 +24,15 @@
           .timeline
             = timeline.story || timeline.message
         .clear(style="clear:both")
+  - elsif @service.provider == "google"
+    - if params[:oauth] == true
+    - else
+      = form_for :service, :url => project_gmail_posts_path, method: 'post' do |f|
+        %label Username
+        %input(type="text" name="username")
+        %br
+        %label Password
+        %input(type="password" name="password")
+        %br
+        %input(type="submit" value="Get Mails")
 = link_to "Back to Project", project_path(@project.id)

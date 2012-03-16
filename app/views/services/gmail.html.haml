@@ -1,0 +1,6 @@
+- imap = @imap
+%ul
+  - (imap.search(['ALL'])[-25]..imap.search(['ALL'])[-1]).each do |message_id|
+    - msg = imap.fetch(message_id,'RFC822')[0].attr['RFC822']
+    - mail = Mail.new(msg)
+    %li= mail.subject

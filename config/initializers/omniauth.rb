@@ -3,4 +3,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :facebook, '407536285938593', 'c77ae6e7772c5e8cff4b950d20829a61', {scope: 'publish_stream read_stream'}
 
   provider :linkedin, 'd1bi5ocg2jrg', 'msFskAcTb4sS28kJ'
+
+  provider :google, "256825776850.apps.googleusercontent.com", "aJUxDDR_ULlBfr6YySFeEyok", :scope => 'https://mail.google.com/'
 end

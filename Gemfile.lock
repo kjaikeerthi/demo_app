@@ -100,6 +100,10 @@ GEM
       rack
     omniauth-facebook (1.2.0)
       omniauth-oauth2 (~> 1.0.0)
+    omniauth-google (1.0.1)
+      multi_json
+      omniauth (~> 1.0.0)
+      omniauth-oauth
     omniauth-linkedin (0.0.6)
       omniauth-oauth (~> 1.0.0)
     omniauth-oauth (1.0.1)
@@ -201,9 +205,11 @@ DEPENDENCIES
   heroku
   jquery-rails
   linkedin
+  mail
   mini_fb
   omniauth
   omniauth-facebook
+  omniauth-google
   omniauth-linkedin
   omniauth-twitter
   pg

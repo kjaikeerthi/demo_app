@@ -11,6 +11,8 @@ class ServicesController < ApplicationController
       redirect_to '/auth/facebook'
     elsif params[:service][:provider].downcase == "linkedin"
       redirect_to '/auth/linkedin'
+    elsif params[:service][:provider].downcase == "google"
+      redirect_to '/auth/google'
     end
   end
 
@@ -35,6 +37,13 @@ class ServicesController < ApplicationController
             auth_token: auth["credentials"]["token"]
             )
         elsif auth["provider"] == "linkedin"
+          project.services.create(
+            uid: uid,
+            provider: auth["provider"],
+            auth_token: auth["credentials"]["token"],
+            auth_secret: auth["credentials"]["secret"]
+            )
+        elsif auth["provider"] == "google"
           project.services.create(
             uid: uid,
             provider: auth["provider"],
@@ -103,7 +112,16 @@ class ServicesController < ApplicationController
         @client = LinkedIn::Client.new
         @client.authorize_from_access(@service.auth_token, @service.auth_secret)
         @feeds = @client.network_updates
+      elsif @service.provider == "google"
       end
     end
+  end
+  
+  def gmail
+    require 'net/imap'
+    require 'mail'
+    @imap = Net::IMAP.new('imap.gmail.com', 993, true)
+    @imap.login(params[:username], params[:password])
+    @imap.select('INBOX')
   end
 end
