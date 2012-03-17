@@ -5,6 +5,6 @@
     - mail = Mail.new(msg)
     %li
       = mail.subject
-      != mail.body
+      != mail.body rescue ""
       %hr
 = link_to "Back to Project", project_path(@project.id)
