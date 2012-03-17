@@ -11,8 +11,6 @@ class ServicesController < ApplicationController
       redirect_to '/auth/facebook'
     elsif params[:service][:provider].downcase == "linkedin"
       redirect_to '/auth/linkedin'
-    elsif params[:service][:provider].downcase == "google"
-      redirect_to '/auth/google'
     end
   end
 
@@ -112,16 +110,39 @@ class ServicesController < ApplicationController
         @client = LinkedIn::Client.new
         @client.authorize_from_access(@service.auth_token, @service.auth_secret)
         @feeds = @client.network_updates
-      elsif @service.provider == "google"
       end
     end
   end
-  
-  def gmail
+
+  def add
+    @project = current_user.projects.find(params[:project_id])
+  end
+
+  def remove_setting
+    @project = current_user.projects.find(params[:project_id])
+    setting = @project.settings.find(params[:setting_id])
+    setting.delete if setting
+    redirect_to project_path(@project.id)
+  end
+
+  def create_imap
+    @project = current_user.projects.find(params[:project_id])
+    @project.settings.create(params[:imap])
+    redirect_to project_path(@project.id)
+  end
+
+  def auth_mail
+    @project = current_user.projects.find(params[:project_id])
+    @setting = @project.settings.find(params[:setting_id])
+  end
+
+  def mail
+    @project = current_user.projects.find(params[:project_id])
+    @setting = @project.settings.find(params[:setting_id])
     require 'net/imap'
     require 'mail'
-    @imap = Net::IMAP.new('imap.gmail.com', 993, true)
+    @imap = Net::IMAP.new(@setting.imap, @setting.port, true)
     @imap.login(params[:username], params[:password])
-    @imap.select('INBOX')
+    @imap.select('INBOX')    
   end
 end

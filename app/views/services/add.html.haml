@@ -1,0 +1,11 @@
+= form_for :imap, :url => project_create_imap_path(project_id: @project.id), method: 'post' do |f|
+  %label Name
+  = f.text_field :name
+  %br
+  %label Imap
+  = f.text_field :imap
+  %br
+  %label Port
+  = f.text_field :port
+  %br
+  = f.submit "Save"

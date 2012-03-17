@@ -3,12 +3,33 @@
 %hr
 = form_for :service, :url => project_services_path(project_id: @project.id), method: 'post' do |f|
   = f.label :provider
-  = f.select :provider, ["Twitter", "Facebook", "Linkedin", "Google"]
+  = f.select :provider, ["Twitter", "Facebook", "Linkedin"]
   = f.submit :add
 
 
 %hr
 
+%h3 Imap Settings
+
+%table
+  %tr
+    %th Name
+    %th Imap Name
+    %th Port Number
+    %th Delete
+    %th Mail
+  - @project.settings.each do |imap|
+    %tr
+      %td= imap.name
+      %td= imap.imap
+      %td= imap.port
+      %td= link_to "Remove", project_remove_imap_path({project_id: @project.id, setting_id: imap.id}), :method => :delete
+      %td= link_to "Check", project_auth_mail_path({project_id: @project.id, setting_id: imap.id})
+%br
+= link_to "Add Imap", project_add_imap_path(project_id: @project.id)
+
+%br
+%hr
 %h3 Your Accounts
 
 - @project.services.each do |service|

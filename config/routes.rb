@@ -10,9 +10,14 @@ SocialApp::Application.routes.draw do
     resources :services, :only => [:create, :destroy]
     post '/user/:user_id/post' => "services#post", :as => "home_posts"
     get '/:provider/:id/show' => "services#show", :as => "show_posts"
-    post '/gmail' => "services#gmail", :as => "gmail_posts"
+    get '/imap' => "services#imaps", :as => "all_imap"
+    get '/imap/add' => "services#add", :as => "add_imap"
+    delete '/:setting_id/destroy' => "services#remove_setting", :as => "remove_imap"
+    post '/imap/create' => "services#create_imap", :as => "create_imap"
+    get '/check/:setting_id/authenticate' => "services#auth_mail", :as => "auth_mail"
+    post '/check/:setting_id/mail' => "services#mail", :as => "check_mail"
   end
-  
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

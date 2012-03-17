@@ -1,0 +1,8 @@
+= form_for :service, :url => project_check_mail_path({setting_id: @setting.id, project_id: @project.id}), method: 'post' do |f|
+  %label Username
+  %input(type="text" name="username")
+  %br
+  %label Password
+  %input(type="password" name="password")
+  %br
+  %input(type="submit" value="Get Mails")
