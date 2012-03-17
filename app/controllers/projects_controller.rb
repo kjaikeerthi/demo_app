@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   def create
     project = current_user.projects.create(params[:project])
     project.settings.create({imap: "imap.gmail.com", name: "Google Mail", port: 993 })
-    project.settings.create({imap: "imap.mail.yahoo.com", name: "Yahoo Mail", port: 993 })
+
     project.save
     redirect_to root_path
   end
