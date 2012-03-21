@@ -2,8 +2,8 @@ class ServicesController < ApplicationController
   before_filter :authenticate_user!, :except => [:post, :show]
 
   def create
-    project = current_user.projects.find(params[:project_id])
-    session[:project_id] = project.id if project
+    @project = current_user.projects.find(params[:project_id])
+    session[:project_id] = @project.id if @project
 
     if params[:service][:provider].downcase == "twitter"
       redirect_to '/auth/twitter'
@@ -11,7 +11,22 @@ class ServicesController < ApplicationController
       redirect_to '/auth/facebook'
     elsif params[:service][:provider].downcase == "linkedin"
       redirect_to '/auth/linkedin'
+    elsif params[:service][:provider].downcase == "imap"
+      @imaps = @project.settings.all
+      render "add_imap"
     end
+  end
+
+  def authenticate_imap
+    @project = current_user.projects.find(params[:project_id])
+    @project.services.create(
+      provider: 'imap',
+      uid: params[:service][:username],
+      username: params[:service][:username],
+      password: params[:service][:password],
+      setting_id: params[:setting_id]
+      )
+    redirect_to project_path(@project.id)
   end
 
   def callback
@@ -99,6 +114,7 @@ class ServicesController < ApplicationController
   def show
     @project = current_user.projects.find(params[:project_id])
     @service = Service.find(params[:id])
+
     if @service
       if @service.provider.downcase == "twitter"
         @account = Twitter::Client.new(oauth_token: @service.auth_token, oauth_token_secret: @service.auth_secret)
@@ -110,6 +126,18 @@ class ServicesController < ApplicationController
         @client = LinkedIn::Client.new
         @client.authorize_from_access(@service.auth_token, @service.auth_secret)
         @feeds = @client.network_updates
+      elsif @service.provider.downcase == "imap"
+        begin
+          require 'net/imap'
+          require 'mail'
+          @setting = @project.settings.find(@service.setting_id)
+          @imap = Net::IMAP.new(@setting.imap, @setting.port, true)
+          @imap.login(@service.username, @service.password)
+          @imap.select('INBOX')
+          render "mail"
+        rescue
+          render text: "Error occured please try again later"
+        end
       end
     end
   end

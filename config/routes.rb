@@ -16,6 +16,7 @@ SocialApp::Application.routes.draw do
     post '/imap/create' => "services#create_imap", :as => "create_imap"
     get '/check/:setting_id/authenticate' => "services#auth_mail", :as => "auth_mail"
     post '/check/:setting_id/mail' => "services#mail", :as => "check_mail"
+    post '/imap/authenticate' => "services#authenticate_imap", :as => "authenticate_imap"
   end
 
   # The priority is based upon order of creation:

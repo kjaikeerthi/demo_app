@@ -1,0 +1,13 @@
+= form_for :service, :url => project_authenticate_imap_path({project_id: @project.id}), method: 'post' do |f|
+  %label username
+  = f.text_field :username
+  %br
+  %label password
+  = f.password_field :password
+  %br
+  %label Imap Setting
+  %select(name='setting_id')
+    - @imaps.each do |imap|
+      %option(value='#{imap.id}')= imap.name
+  %br
+  = f.submit "Save"
