@@ -102,6 +102,11 @@ class ServicesController < ApplicationController
           @client = LinkedIn::Client.new
           @client.authorize_from_access(service.auth_token, service.auth_secret)
           @client.update_status(params[:message])
+        elsif service.provider == "imap"
+          if params[:subject] && params[:to]
+            @hash = {subject: params[:subject], to: params[:to], body: params[:message]}
+            TestMailer.send_email(@hash).deliver
+          end
         end
       end
       sign_in(@user)

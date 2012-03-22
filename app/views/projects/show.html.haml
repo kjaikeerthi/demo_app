@@ -45,6 +45,13 @@
   - @project.services.each do |service|
     %input(type="checkbox" name="service[]" value="#{service.id}") #{service.provider}(#{service.uid})
   %br
+  %br
+  To address(seperate emails by commas)
+  %input(type="text" name="to")
+  %br
+  Subject(only for imap)
+  %input(type="text" name="subject" value="Send from jdtwitter")
+  %br
   %textarea(name="message" cols="150" rows="15")
   %br
   %input(type="submit" value="Post")
