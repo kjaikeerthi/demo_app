@@ -3,7 +3,6 @@ class TestMailer < ActionMailer::Base
 
   def send_email(hash)
     @hash = hash
-    binding.pry
     mail(:to => @hash[:to], :subject => @hash[:subject])
   end
 end
