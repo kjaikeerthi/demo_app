@@ -66,13 +66,13 @@ SocialApp::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
+  ActionMailer::Base.smtp_settings = {
     :address              => "smtp.gmail.com",
     :port                 => 587,
-    :domain               => 'jaikeerthi.in',
-    :user_name            => 'tempusgroup',
-    :password             => 'TempusGroup@1234',
-    :authentication       => 'plain',
-    :enable_starttls_auto => true  }
+    :user_name            => 'tempusgroup@jaikeerthi.in',
+    :password             => 'Tempus@123#',
+    :authentication       => "plain",
+    :enable_starttls_auto => true
+  }
 
 end

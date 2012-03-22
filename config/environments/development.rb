@@ -34,15 +34,20 @@ SocialApp::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
-
+  
+  config.action_mailer.default_url_options = { :host => 'jdtwitter.herokuapp.com' }
+  # ActionMailer Config
+  
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default :charset => "utf-8"
+   ActionMailer::Base.smtp_settings = {
     :address              => "smtp.gmail.com",
     :port                 => 587,
-    :domain               => 'jaikeerthi.in',
-    :user_name            => 'tempusgroup',
-    :password             => 'TempusGroup@1234',
-    :authentication       => 'plain',
-    :enable_starttls_auto => true  }
-
+    :user_name            => 'tempusgroup@jaikeerthi.in',
+    :password             => 'Tempus@123#',
+    :authentication       => "plain",
+    :enable_starttls_auto => true
+  }
 end
