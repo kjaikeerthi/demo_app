@@ -40,8 +40,7 @@
 %hr
 %h3 Post
 
-
-%form(action='#{project_home_posts_path(user_id: current_user.id, project_id: @project.id)}' method="post")
+= form_for(project_home_posts_path(user_id: current_user.id, project_id: @project.id), method: post)
   - @project.services.each do |service|
     %input(type="checkbox" name="service[]" value="#{service.id}") #{service.provider}(#{service.uid})
   %br
